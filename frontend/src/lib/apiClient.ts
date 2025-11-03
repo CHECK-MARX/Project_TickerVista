@@ -21,6 +21,8 @@ const forcedDemo = typeof window !== "undefined" && new URLSearchParams(window.l
 let currentSource: DataSource = forcedDemo || !API_BASE ? "fallback" : "live";
 const sourceListeners = new Set<(source: DataSource) => void>();
 
+const enforceHttps = (value: string) => (/^http:\/\//i.test(value) ? value.replace(/^http:\/\//i, "https://") : value);
+
 const notifySource = (source: DataSource) => {
   currentSource = source;
   sourceListeners.forEach((listener) => listener(source));
@@ -37,12 +39,12 @@ const buildUrl = (path: string, params?: QueryParams) => {
     }
   });
   const query = search.toString();
-  const base = API_BASE.replace(/\/$/, "");
+  const base = enforceHttps(API_BASE).replace(/\/$/, "");
   return `${base}${path}${query ? `?${query}` : ""}`;
 };
 
 const mapStaticEndpoint = (path: string, params?: QueryParams) => {
-  const base = API_BASE.replace(/\/$/, "");
+  const base = enforceHttps(API_BASE).replace(/\/$/, "");
   if (!base || /^https?:\/\//i.test(base)) {
     return null;
   }
@@ -106,7 +108,7 @@ export const fetchJSON = async <T>(path: string, options?: FetchOptions<T>): Pro
   }
 
   const staticUrl = mapStaticEndpoint(path, options?.params);
-  const url = staticUrl ?? buildUrl(path, options?.params);
+  const url = enforceHttps(staticUrl ?? buildUrl(path, options?.params));
   const attempts = 3;
   for (let attempt = 0; attempt < attempts; attempt += 1) {
     try {

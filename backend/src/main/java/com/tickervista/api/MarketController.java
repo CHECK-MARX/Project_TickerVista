@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping(path = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MarketController {
+
+    private static final Pattern SYMBOL_PATTERN = Pattern.compile("^[A-Za-z0-9][A-Za-z0-9._^\\-]{0,31}$");
 
     private final DataRepository repository;
     private final ObjectMapper objectMapper;
@@ -91,7 +94,11 @@ public class MarketController {
     }
 
     private ResponseEntity<JsonNode> loadSymbolResource(String symbol, String fileName) throws IOException {
-        return repository.readJson("symbols", symbol, fileName)
+        String normalizedSymbol = normalizeSymbol(symbol);
+        if (normalizedSymbol == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return repository.readJson("symbols", normalizedSymbol, fileName)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -127,5 +134,16 @@ public class MarketController {
             return limited;
         }
         return result;
+    }
+
+    private String normalizeSymbol(String symbol) {
+        if (symbol == null) {
+            return null;
+        }
+        String trimmed = symbol.trim();
+        if (!SYMBOL_PATTERN.matcher(trimmed).matches()) {
+            return null;
+        }
+        return trimmed;
     }
 }
