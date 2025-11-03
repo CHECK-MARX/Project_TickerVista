@@ -1,0 +1,13 @@
+[project]
+name = "tickervista-worker"
+version = "0.1.0"
+description = "Free data ingestion worker for TickerVista"
+requires-python = ">=3.11"
+dependencies = [
+  "requests>=2.31.0",
+  "pandas>=2.0",
+  "yfinance>=0.2.43"
+]
+
+[project.scripts]
+tickervista-fetch = "fetch_market_data:main"

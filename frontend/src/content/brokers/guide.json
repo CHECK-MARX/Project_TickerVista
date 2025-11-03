@@ -1,0 +1,32 @@
+﻿{
+  "lastUpdated": "2025-10-25T12:00:00Z",
+  "brokers": [
+    {
+      "name": "GlobalInvest",
+      "markets": ["US", "JP", "EU"],
+      "baseCurrency": "USD",
+      "commission": "$0.0035 / share (min $1)",
+      "fxSpread": "0.30%",
+      "platform": "Web / Mobile",
+      "notes": "米国株はフラクショナル対応"
+    },
+    {
+      "name": "NipponSecurities",
+      "markets": ["JP", "US"],
+      "baseCurrency": "JPY",
+      "commission": "約定代金の0.05% (上限2,000円)",
+      "fxSpread": "0.25%",
+      "platform": "Desktop / API",
+      "notes": "PTS取引とIPO抽選あり"
+    },
+    {
+      "name": "AlphaLite",
+      "markets": ["US"],
+      "baseCurrency": "USD",
+      "commission": "無料 (マージン金利あり)",
+      "fxSpread": "N/A",
+      "platform": "Mobile first",
+      "notes": "OTC不可。教育リソースが豊富"
+    }
+  ]
+}

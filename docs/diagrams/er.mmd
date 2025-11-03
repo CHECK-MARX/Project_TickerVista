@@ -1,0 +1,28 @@
+﻿erDiagram
+    symbols ||--o{ ohlcv_1d : contains
+    symbols ||--o{ ohlcv_1m : contains
+    symbols ||--o{ corporate_actions : tracks
+    symbols {
+        bigint id PK
+        text symbol
+        text exchange
+        text currency
+        text tz
+    }
+    ohlcv_1d {
+        bigint symbol_id FK
+        timestamptz ts
+        numeric open
+        numeric high
+        numeric low
+        numeric close
+        numeric volume
+        numeric adj_close
+    }
+    corporate_actions {
+        bigint symbol_id FK
+        date ex_date
+        text type
+        numeric ratio
+        numeric amount
+    }

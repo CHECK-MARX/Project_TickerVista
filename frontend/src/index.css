@@ -1,0 +1,28 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  @apply bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen;
+}
+
+.cmdk-dialog {
+  @apply fixed left-1/2 top-24 z-50 w-full max-w-2xl -translate-x-1/2 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/95;
+}
+
+.cmdk-dialog [cmdk-input] {
+  @apply w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none dark:border-slate-700;
+}
+
+.cmdk-dialog [cmdk-list] {
+  @apply mt-3 max-h-72 overflow-auto;
+}
+
+.cmdk-dialog [cmdk-item] {
+  @apply flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-sm text-slate-700 aria-selected:bg-slate-100 dark:text-slate-200 dark:aria-selected:bg-slate-800;
+}

@@ -1,0 +1,37 @@
+﻿[
+  {
+    "term": "RSI",
+    "label": "RSI (相対力指数)",
+    "description": "一定期間の上げ幅と下げ幅のバランスから過熱感を測る指標です。70以上は買われ過ぎ、30以下は売られ過ぎと言われます。",
+    "how_to_read": "50付近なら中立。急上昇後に70超なら利益確定を検討、急落後に30割れならリバウンド注意です。",
+    "category": "Oscillator"
+  },
+  {
+    "term": "MACD",
+    "label": "MACD",
+    "description": "短期と長期のEMAの差分からトレンド転換を探る指標。シグナルとのクロスで売買判断を補助します。",
+    "how_to_read": "ゼロラインより上でゴールデンクロスは強気、下でデッドクロスは弱気です。",
+    "category": "Trend"
+  },
+  {
+    "term": "ATR",
+    "label": "ATR (平均変動幅)",
+    "description": "1日の値幅やギャップを考慮したボラティリティ指標です。",
+    "how_to_read": "ATRが上昇=値動きが荒い。ストップ幅やポジションサイズ決めに使います。",
+    "category": "Volatility"
+  },
+  {
+    "term": "TrafficLight",
+    "label": "トラフィックライト",
+    "description": "複数指標をスコアリングし、初心者にも直感的な色で相場の温度感を示します。",
+    "how_to_read": "GREEN=追い風、YELLOW=様子見、RED=慎重。指値や損切りを必ず設定しましょう。",
+    "category": "Guidance"
+  },
+  {
+    "term": "Beta",
+    "label": "β (市場感応度)",
+    "description": "指数との回帰から算出。1を超えると市場以上に動きやすくなります。",
+    "how_to_read": "βが高ければリスク許容度を調整。低β銘柄は防御的です。",
+    "category": "Risk"
+  }
+]

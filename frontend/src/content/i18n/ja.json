@@ -1,0 +1,70 @@
+﻿{
+  "nav": {
+    "dashboard": "ダッシュボード",
+    "markets": "マーケット",
+    "sectors": "セクター",
+    "symbols": "銘柄サマリー",
+    "indicators": "指標辞書",
+    "strategies": "戦略カタログ",
+    "learn": "学習ハブ",
+    "brokers": "証券会社メモ",
+    "about": "TickerVistaについて",
+    "rankings": "ランキング"
+  },
+  "common": {
+    "search_placeholder": "銘柄やページを検索",
+    "retry": "再取得",
+    "loading": "読み込み中",
+    "live": "ライブ",
+    "demo": "デモ",
+    "unavailable": "準備中",
+    "open": "開く",
+    "view_details": "詳細を見る"
+  },
+  "dashboard": {
+    "title": "グローバル銘柄ダッシュボード",
+    "global": "主要銘柄スナップショット",
+    "quick_symbols": "クイック銘柄",
+    "no_data": "表示できるデータがありません"
+  },
+  "symbols": {
+    "results": "検索結果",
+    "recent": "最近見た銘柄",
+    "selected": "選択中の銘柄",
+    "search_help": "銘柄コード（例: 7203.T）または企業名を入力すると候補が表示されます。",
+    "counts_label": "該当銘柄数",
+    "empty_recent": "最近表示した銘柄はまだありません。",
+    "empty_selection": "銘柄を選択してください",
+    "empty_message": "検索ボックスから銘柄を選ぶと、チャートとサマリーが表示されます。",
+    "price_section": "価格・指標の概要",
+    "intraday_section": "日中の値動き",
+    "technical_section": "代表的なテクニカル指標",
+    "forecast_section": "予測レンジ",
+    "insight_section": "ハイライト",
+    "risk_section": "注意ポイント",
+    "summary_section": "全体サマリー",
+    "checklist_section": "チェックリスト",
+    "chart_section": "チャート",
+    "chart_description": "ボタンで日足・週足・月足を切り替えられます。パソコンではグラフにマウスを合わせると値が表示されます。",
+    "live_tag": "ライブ",
+    "fallback_tag": "サンプル",
+    "tech_help_text": "各指標の用語解説はこちら（IFinance）",
+    "tech_help_link": "https://www.ifinance.ne.jp/glossary/technical/tec190.html"
+  },
+  "markets": {
+    "subtitle": "世界市場の概況とヒートマップ",
+    "top_indices": "主要株価指数",
+    "fx_pairs": "主要通貨ペア",
+    "heatmap_title": "ヒートマップ（騰落率と出来高）",
+    "heatmap_description": "色の濃淡は前日比の上昇・下落率、タイルの大きさは出来高のおおよその規模を示します。",
+    "heatmap_no_data": "表示できるデータがありません。ワーカーを実行して最新データを取得してください。",
+    "heatmap_change": "変化率",
+    "heatmap_close": "終値",
+    "heatmap_legend": "1日の変動率 (%)",
+    "heatmap_hint_text": "ヒートマップの詳しい見方は Yahoo!ファイナンスの解説も参考になります。",
+    "heatmap_hint_link": "https://finance.yahoo.co.jp/heatmap"
+  },
+  "rankings": {
+    "subtitle": "前日比トップ20と配当利回りトップ100を網羅"
+  }
+}

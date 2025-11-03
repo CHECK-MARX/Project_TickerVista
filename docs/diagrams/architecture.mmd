@@ -1,0 +1,24 @@
+﻿flowchart LR
+    subgraph User
+        UI[React + shadcn Dashboard]
+    end
+    subgraph API
+        B[Spring WebFlux]
+        R[(Redis Cache)]
+        DB[(TimescaleDB)]
+    end
+    subgraph Worker
+        W[Python ETL]
+        MQ[(Kafka future)]
+    end
+    subgraph Storage
+        M[(MinIO)]
+    end
+
+    UI -->|OpenAPI client| B
+    B -->|R2DBC| DB
+    B -->|Indicators cache| R
+    W -->|Ingestion| DB
+    W -->|Raw parquet| M
+    W -.future events.-> MQ
+    MQ -.-> B

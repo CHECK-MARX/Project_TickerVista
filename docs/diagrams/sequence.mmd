@@ -1,0 +1,15 @@
+﻿sequenceDiagram
+    participant Scheduler
+    participant Worker
+    participant Timescale
+    participant Redis
+    participant API
+
+    Scheduler->>Worker: Trigger 06:00 UTC job
+    Worker->>Stooq: Download OHLCV
+    Worker->>Timescale: UPSERT ohlcv + metadata
+    Worker->>MinIO: Upload raw parquet
+    Worker->>Redis: Cache analytics JSON
+    API->>Redis: Check indicator snapshot
+    API->>Timescale: Fetch OHLCV fallback
+    API-->>Client: Traffic light summary

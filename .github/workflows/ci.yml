@@ -1,0 +1,56 @@
+﻿name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install worker deps
+        working-directory: worker
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[test]
+      - name: Python lint
+        working-directory: worker
+        run: |
+          ruff check .
+          black --check .
+          pytest
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Backend build
+        working-directory: backend
+        run: ./gradlew test --stacktrace || gradle test --stacktrace
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Frontend deps
+        working-directory: frontend
+        run: npm install
+      - name: Frontend lint & build
+        working-directory: frontend
+        run: |
+          npm run lint
+          npm run build
+
+      - name: Docker build
+        run: |
+          docker build -t tickervista-backend ./backend
+          docker build -t tickervista-worker ./worker
+          docker build -t tickervista-frontend ./frontend
