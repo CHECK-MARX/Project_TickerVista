@@ -1,0 +1,41 @@
+﻿# General
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+.env
+.env.local
+.env.*.local
+node_modules/
+.vscode/
+.idea/
+.gradle/
+build/
+out/
+*.iml
+
+# Frontend
+frontend/dist/
+frontend/.vite/
+frontend/node_modules/
+frontend/playwright-report/
+frontend/test-results/
+
+# Reports
+coverage/
+htmlcov/
+*.coverage
+reports/
+
+# Backend
+backend/build/
+backend/.gradle/
+backend/.idea/
+
+# Worker
+worker/.venv/
+worker/__pycache__/
+
+# Generated data
+data/
+
