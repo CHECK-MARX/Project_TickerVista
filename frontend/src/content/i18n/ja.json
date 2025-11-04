@@ -60,6 +60,8 @@
     "heatmap_no_data": "表示できるデータがありません。ワーカーを実行して最新データを取得してください。",
     "heatmap_change": "変化率",
     "heatmap_close": "終値",
+    "heatmap_weight_index": "重み指数",
+    "heatmap_relative_volume": "相対出来高",
     "heatmap_legend": "1日の変動率 (%)",
     "heatmap_hint_text": "ヒートマップの詳しい見方は Yahoo!ファイナンスの解説も参考になります。",
     "heatmap_hint_link": "https://finance.yahoo.co.jp/heatmap"

@@ -95,15 +95,30 @@ const HEATMAP_MAX = 4;
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
-const getHeatmapColor = (changePct: number) => {
+const adjustLightness = (value: number, delta: number) => Math.max(8, Math.min(92, value + delta));
+
+const getHeatmapVisual = (changePct: number) => {
   const clamped = clamp(changePct, -HEATMAP_MAX, HEATMAP_MAX);
   const ratio = clamped / HEATMAP_MAX;
-  if (ratio >= 0) {
-    const lightness = 58 - ratio * 18;
-    return `hsl(152, 60%, ${lightness}%)`;
-  }
-  const lightness = 60 + Math.abs(ratio) * 18;
-  return `hsl(0, 70%, ${lightness}%)`;
+  const positive = ratio >= 0;
+  const magnitude = Math.abs(ratio);
+  const hue = positive ? 150 : 0;
+  const saturation = positive ? 60 + magnitude * 20 : 68 - magnitude * 8;
+  const baseLightness = positive ? 50 - magnitude * 10 : 60 + magnitude * 10;
+  const highlight = adjustLightness(baseLightness, 16);
+  const mid = adjustLightness(baseLightness, 6);
+  const shadow = adjustLightness(baseLightness, -14);
+  const glowLightness = adjustLightness(baseLightness, positive ? -6 : -10);
+
+  return {
+    gradient: `linear-gradient(135deg, hsl(${hue}, ${saturation}%, ${highlight}%), hsl(${hue}, ${Math.min(
+      90,
+      saturation + 8
+    )}%, ${mid}%), hsl(${hue}, ${saturation}%, ${shadow}%))`,
+    border: `hsla(${hue}, ${saturation}%, ${highlight}%, 0.4)`,
+    glow: `0 18px 36px -18px hsla(${hue}, ${saturation}%, ${glowLightness}%, 0.55)`,
+    textColor: mid < 48 ? "#F8FAFC" : "#0F172A"
+  };
 };
 
 type HeatmapCell = {
@@ -124,31 +139,60 @@ const HeatmapGrid = ({ data }: { data: HeatmapCell[] }) => {
   const maxWeight = Math.max(...weightValues, 1);
 
   return (
-    <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+    <div
+      className="mt-8 grid gap-4 md:gap-6"
+      style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gridAutoRows: "140px" }}
+    >
       {data.map((item) => {
         const sizeRatio = Math.max(item.weight / maxWeight, 0.3);
-        const height = 140 + sizeRatio * 80;
-        const color = getHeatmapColor(item.changePct);
+        const span = Math.max(1, Math.round(sizeRatio * 2.4));
+        const { gradient, border, glow, textColor } = getHeatmapVisual(item.changePct);
+        const secondaryColor = textColor === "#0F172A" ? "rgba(15,23,42,0.68)" : "rgba(241,245,249,0.82)";
+        const badgeBg = textColor === "#0F172A" ? "rgba(248,250,252,0.65)" : "rgba(15,23,42,0.28)";
+        const badgeText = textColor === "#0F172A" ? "#0F172A" : "#F8FAFC";
+        const subtleOutline = textColor === "#0F172A" ? "rgba(15,23,42,0.08)" : "rgba(15,23,42,0.22)";
+        const weightScore = Math.round(sizeRatio * 100);
         return (
           <div
             key={item.symbol}
-            className="flex flex-col justify-between rounded-3xl border border-white/30 px-4 py-3 text-slate-900 shadow-sm dark:border-slate-800"
-            style={{ background: color, minHeight: `${height}px` }}
+            className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl px-5 py-4 transition-transform duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl"
+            style={{
+              backgroundImage: gradient,
+              border: `1px solid ${border}`,
+              boxShadow: glow,
+              gridRowEnd: `span ${span}`
+            }}
           >
-            <div className="flex items-center justify-between text-xs text-slate-700">
-              <span className="rounded-full bg-white/40 px-2 py-0.5">{item.sector}</span>
+            <div
+              className="pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-300 group-hover:opacity-80"
+              style={{
+                boxShadow: `inset 0 1px 0 ${subtleOutline}, inset 0 -18px 40px rgba(15, 15, 15, 0.18)`
+              }}
+            />
+            <div className="relative flex items-center justify-between text-xs font-medium" style={{ color: secondaryColor }}>
+              <span style={{ backgroundColor: badgeBg, color: badgeText }} className="rounded-full px-2 py-0.5">
+                {item.sector}
+              </span>
               {typeof item.lastClose === "number" && (
                 <span>
                   {t("markets.heatmap_close")} {item.lastClose.toFixed(2)}
                 </span>
               )}
             </div>
-            <div>
-              <p className="text-2xl font-bold tracking-tight text-slate-900">{item.symbol}</p>
-              <p className="text-sm text-slate-700">
+            <div className="relative">
+              <p className="text-3xl font-bold tracking-tight" style={{ color: textColor }}>
+                {item.symbol}
+              </p>
+              <p className="mt-1 text-sm font-medium" style={{ color: secondaryColor }}>
                 {t("markets.heatmap_change")}: {item.changePct >= 0 ? "+" : ""}
                 {item.changePct.toFixed(2)}%
               </p>
+            </div>
+            <div className="relative mt-4 flex items-center justify-between text-[0.7rem] font-semibold" style={{ color: secondaryColor }}>
+              <span>
+                {t("markets.heatmap_weight_index")} {weightScore}
+              </span>
+              <span>{t("markets.heatmap_relative_volume")}</span>
             </div>
           </div>
         );
