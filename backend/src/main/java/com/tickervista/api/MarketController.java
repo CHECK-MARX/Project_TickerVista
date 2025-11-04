@@ -3,6 +3,7 @@ package com.tickervista.api;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -32,35 +34,35 @@ public class MarketController {
     public ResponseEntity<JsonNode> marketOverview() throws IOException {
         return repository.readJson("markets", "overview.json")
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(MarketController::notFound);
     }
 
     @GetMapping("/sectors/overview")
     public ResponseEntity<JsonNode> sectorsOverview() throws IOException {
         return repository.readJson("sectors", "overview.json")
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(MarketController::notFound);
     }
 
     @GetMapping("/rankings/top-movers")
     public ResponseEntity<JsonNode> topMovers() throws IOException {
         return repository.readJson("rankings", "top_movers.json")
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(MarketController::notFound);
     }
 
     @GetMapping("/rankings/dividends")
     public ResponseEntity<JsonNode> dividends() throws IOException {
         return repository.readJson("rankings", "dividends.json")
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(MarketController::notFound);
     }
 
     @GetMapping("/dictionary")
     public ResponseEntity<JsonNode> dictionary() throws IOException {
         return repository.readJson("dictionary.json")
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(MarketController::notFound);
     }
 
     @GetMapping("/symbols")
@@ -70,7 +72,7 @@ public class MarketController {
         return repository.readJson("symbols", "index.json")
                 .map(node -> filterSymbols(node, query, exchange, limit))
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(MarketController::notFound);
     }
 
     @GetMapping("/ohlcv")
@@ -96,11 +98,16 @@ public class MarketController {
     private ResponseEntity<JsonNode> loadSymbolResource(String symbol, String fileName) throws IOException {
         String normalizedSymbol = normalizeSymbol(symbol);
         if (normalizedSymbol == null) {
-            return ResponseEntity.badRequest().build();
+            return badRequest();
         }
-        return repository.readJson("symbols", normalizedSymbol, fileName)
+        Path symbolPath = Path.of(normalizedSymbol).normalize();
+        if (symbolPath.isAbsolute() || symbolPath.getNameCount() != 1 || symbolPath.toString().contains("..")) {
+            return badRequest();
+        }
+        String safeSymbol = symbolPath.toString();
+        return repository.readJson("symbols", safeSymbol, fileName)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(MarketController::notFound);
     }
 
     private JsonNode filterSymbols(JsonNode node, String query, String exchange, Integer limit) {
@@ -145,5 +152,13 @@ public class MarketController {
             return null;
         }
         return trimmed;
+    }
+
+    private static ResponseEntity<JsonNode> notFound() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).<JsonNode>build();
+    }
+
+    private static ResponseEntity<JsonNode> badRequest() {
+        return ResponseEntity.badRequest().<JsonNode>build();
     }
 }
