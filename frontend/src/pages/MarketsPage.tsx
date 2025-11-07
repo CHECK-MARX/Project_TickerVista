@@ -83,6 +83,10 @@ const MarketsPage = () => {
           </div>
           <HeatmapLegend />
         </div>
+        <p className="mt-4 text-xs leading-relaxed text-slate-500">
+          {t("markets.heatmap_explainer")}
+          <span className="mt-1 block text-[0.72rem] text-slate-400">{t("markets.heatmap_metrics_hint")}</span>
+        </p>
         <HeatmapGrid data={heatmapData} />
       </Card>
     </div>

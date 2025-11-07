@@ -62,6 +62,8 @@
     "heatmap_close": "終値",
     "heatmap_weight_index": "重み指数",
     "heatmap_relative_volume": "相対出来高",
+    "heatmap_explainer": "カードの立体感は出来高スコアを反映し、せり上がるほど取引エネルギーが強い銘柄です。色は前日比の騰落率、面積と縦横比は時価総額・出来高を掛け合わせたおおよその規模を表します。",
+    "heatmap_metrics_hint": "「重み指数」はヒートマップ内での相対的な比重を 0〜100 で示し、「相対出来高」は当日の売買が通常より活発かどうかを直感的に捉えるための補助指標です。",
     "heatmap_legend": "1日の変動率 (%)",
     "heatmap_hint_text": "ヒートマップの詳しい見方は Yahoo!ファイナンスの解説も参考になります。",
     "heatmap_hint_link": "https://finance.yahoo.co.jp/heatmap"
