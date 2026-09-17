@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: tickervista-worker
+Version: 0.1.0
+Summary: Free data ingestion worker for TickerVista
+Requires-Python: >=3.11
+Requires-Dist: requests>=2.31.0
+Requires-Dist: pandas>=2.0
+Requires-Dist: yfinance>=0.2.43

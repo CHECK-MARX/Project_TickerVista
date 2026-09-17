@@ -1,0 +1,8 @@
+fetch_market_data.py
+pyproject.toml
+tickervista_worker.egg-info/PKG-INFO
+tickervista_worker.egg-info/SOURCES.txt
+tickervista_worker.egg-info/dependency_links.txt
+tickervista_worker.egg-info/entry_points.txt
+tickervista_worker.egg-info/requires.txt
+tickervista_worker.egg-info/top_level.txt
