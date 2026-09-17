@@ -1,0 +1,2 @@
+[console_scripts]
+tickervista-fetch = fetch_market_data:main
